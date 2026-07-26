@@ -1,0 +1,149 @@
+2026-07-23 13:57:18.818 [main] INFO  c.n.n.NingAiCodeMotherApplication - Starting NingAiCodeMotherApplication using Java 22.0.1 with PID 7036 (E:\xm\ning-ai-code-mother\target\classes started by 柠檬可晗 in E:\xm\ning-ai-code-mother)
+2026-07-23 13:57:18.821 [main] DEBUG c.n.n.NingAiCodeMotherApplication - Running with Spring Boot v4.0.7, Spring v7.0.8
+2026-07-23 13:57:18.822 [main] INFO  c.n.n.NingAiCodeMotherApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-23 13:57:19.676 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8123 (http)
+2026-07-23 13:57:19.686 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8123"]
+2026-07-23 13:57:19.698 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-23 13:57:19.698 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-07-23 13:57:19.776 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 910 ms
+2026-07-23 13:57:20.124 [main] INFO  o.s.v.b.OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2026-07-23 13:57:20.370 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8123"]
+2026-07-23 13:57:20.387 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8123 (http) with context path '/api'
+2026-07-23 13:57:20.393 [main] INFO  c.n.n.NingAiCodeMotherApplication - Started NingAiCodeMotherApplication in 2.124 seconds (process running for 2.974)
+2026-07-23 13:57:22.227 [http-nio-8123-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-23 13:57:22.227 [http-nio-8123-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-07-23 13:57:22.228 [http-nio-8123-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-07-23 13:57:22.827 [http-nio-8123-exec-4] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 269 ms
+2026-07-23 13:57:35.391 [http-nio-8123-exec-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-23 13:57:35.644 [http-nio-8123-exec-5] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@69f4b46a
+2026-07-23 13:57:35.645 [http-nio-8123-exec-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-23 13:57:35.652 [http-nio-8123-exec-5] DEBUG c.n.n.m.U.selectObjectListByQuery - ==>  Preparing: SELECT 1 AS `temp_one` FROM `user` WHERE user_account = ? LIMIT 1
+2026-07-23 13:57:35.671 [http-nio-8123-exec-5] DEBUG c.n.n.m.U.selectObjectListByQuery - ==> Parameters: 18780710595(String)
+2026-07-23 13:57:35.702 [http-nio-8123-exec-5] DEBUG c.n.n.m.U.selectObjectListByQuery - <==      Total: 1
+2026-07-23 13:57:35.711 [http-nio-8123-exec-5] ERROR c.n.n.aop.GlobalExceptionHandler - 业务异常
+com.ning.ningaicodemother.exception.BusinessException: 用户已存在
+	at com.ning.ningaicodemother.exception.ThrowUtils.throwIf(ThrowUtils.java:25)
+	at com.ning.ningaicodemother.service.impl.UserServiceImpl.checkUserRepeatByAccount(UserServiceImpl.java:70)
+	at com.ning.ningaicodemother.service.impl.UserServiceImpl.registerUser(UserServiceImpl.java:26)
+	at com.ning.ningaicodemother.controller.UserController.registerUser(UserController.java:52)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:1272)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1801)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2026-07-23 13:59:50.183 [SpringApplicationShutdownHook] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-07-23 13:59:50.190 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-07-23 13:59:50.193 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-23 13:59:50.198 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-07-23 13:59:52.632 [main] INFO  c.n.n.NingAiCodeMotherApplication - Starting NingAiCodeMotherApplication using Java 22.0.1 with PID 14268 (E:\xm\ning-ai-code-mother\target\classes started by 柠檬可晗 in E:\xm\ning-ai-code-mother)
+2026-07-23 13:59:52.634 [main] DEBUG c.n.n.NingAiCodeMotherApplication - Running with Spring Boot v4.0.7, Spring v7.0.8
+2026-07-23 13:59:52.636 [main] INFO  c.n.n.NingAiCodeMotherApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-23 13:59:53.487 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8123 (http)
+2026-07-23 13:59:53.498 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8123"]
+2026-07-23 13:59:53.500 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-23 13:59:53.500 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-07-23 13:59:53.562 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 880 ms
+2026-07-23 13:59:53.909 [main] INFO  o.s.v.b.OptionalValidatorFactoryBean - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2026-07-23 13:59:54.154 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8123"]
+2026-07-23 13:59:54.180 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8123 (http) with context path '/api'
+2026-07-23 13:59:54.185 [main] INFO  c.n.n.NingAiCodeMotherApplication - Started NingAiCodeMotherApplication in 2.104 seconds (process running for 3.015)
+2026-07-23 13:59:59.803 [http-nio-8123-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-23 13:59:59.803 [http-nio-8123-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-07-23 13:59:59.804 [http-nio-8123-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-07-23 13:59:59.910 [http-nio-8123-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-23 14:00:00.267 [http-nio-8123-exec-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4cbcdf42
+2026-07-23 14:00:00.270 [http-nio-8123-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-23 14:00:00.279 [http-nio-8123-exec-1] DEBUG c.n.n.m.U.selectObjectListByQuery - ==>  Preparing: SELECT 1 AS `temp_one` FROM `user` WHERE user_account = ? LIMIT 1
+2026-07-23 14:00:00.306 [http-nio-8123-exec-1] DEBUG c.n.n.m.U.selectObjectListByQuery - ==> Parameters: 18780710595(String)
+2026-07-23 14:00:00.339 [http-nio-8123-exec-1] DEBUG c.n.n.m.U.selectObjectListByQuery - <==      Total: 1
+2026-07-23 14:00:00.348 [http-nio-8123-exec-1] ERROR c.n.n.aop.GlobalExceptionHandler - 业务异常
+com.ning.ningaicodemother.exception.BusinessException: 用户已存在
+	at com.ning.ningaicodemother.exception.ThrowUtils.throwIf(ThrowUtils.java:25)
+	at com.ning.ningaicodemother.service.impl.UserServiceImpl.checkUserRepeatByAccount(UserServiceImpl.java:70)
+	at com.ning.ningaicodemother.service.impl.UserServiceImpl.registerUser(UserServiceImpl.java:26)
+	at com.ning.ningaicodemother.controller.UserController.registerUser(UserController.java:52)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:1272)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1801)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2026-07-23 14:06:06.946 [SpringApplicationShutdownHook] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-07-23 14:06:06.949 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-07-23 14:06:06.957 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-23 14:06:06.960 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
