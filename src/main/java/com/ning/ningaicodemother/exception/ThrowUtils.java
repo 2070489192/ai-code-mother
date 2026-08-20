@@ -3,6 +3,18 @@ package com.ning.ningaicodemother.exception;
 // 异常抛出工具类
 public class ThrowUtils {
 
+
+    /**
+     * 无条件抛异常
+     *
+     * @param errorCode 错误码
+     * @param message   错误信息
+     * @return 无返回值
+     */
+    public static <T> T throwException(ErrorCode errorCode, String message) {
+        throw new BusinessException(errorCode, message);
+    }
+
     /**
      * 条件成立则抛异常
      *
