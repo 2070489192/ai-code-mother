@@ -25,7 +25,8 @@ public class AiCodeWrite {
     //保存单文件代码
     private static void saveSingleFile(String fileName,String dirPath,String content){
         String filePath = dirPath+File.separator+fileName;
-          FileUtil.writeString(content, filePath, StandardCharsets.UTF_8);
+        //null 防护,避免 AI 输出为空时写文件报 NPE
+        FileUtil.writeString(content == null ? "" : content, filePath, StandardCharsets.UTF_8);
     }
     //保存原生HTML代码
     public static File saveHtmlFile(HtmlResult htmlResult){
