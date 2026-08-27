@@ -5,6 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.ning.ningaicodemother.ai.model.HtmlResult;
 import com.ning.ningaicodemother.ai.model.MultiResult;
 
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +20,7 @@ import java.util.regex.Pattern;
  *
  * @author yupi
  */
+@Deprecated
 public class CodeParser {
 
     private static final Pattern HTML_CODE_PATTERN = Pattern.compile("```(?:html|html5)\\b[^\\r\\n]*\\r?\\n([\\s\\S]*?)```", Pattern.CASE_INSENSITIVE);

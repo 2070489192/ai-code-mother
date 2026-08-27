@@ -1,9 +1,6 @@
 package com.ning.ningaicodemother.common;
 
 import com.ning.ningaicodemother.ai.enums.CodeTypeEnum;
-import com.ning.ningaicodemother.ai.model.MultiResult;
-import com.ning.ningaicodemother.ai.service.AiService;
-import com.ning.ningaicodemother.ai.utils.CodeParser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +20,7 @@ class DoorTest {
     void generateAndSaveCodeStream() {
         Flux<String> codeStream =door
                 .generateCodeStreaming(
-                        "帮我做一个王智的个人技术博客,擅长各种后端,做过黑马点评项目,不超过80行"
+                        "帮我做一个宁科涵的个人技术博客,擅长各种后端,做过各种项目,不超过80行"
                         , CodeTypeEnum.MULTI_FILE);
         // 阻塞等待所有数据收集完成
         List<String> result = codeStream.collectList().block();

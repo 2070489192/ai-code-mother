@@ -20,7 +20,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class AuthInter {
     @Resource
     private UserService userService;
-@Around("@annotation(authCheck)")
+    @Around("@annotation(authCheck)")
     public Object checkAuth(ProceedingJoinPoint joinPoint,AuthCheck authCheck) throws Throwable {
     String mustRole = authCheck.mustRole();
     // 从请求中获取用户信息

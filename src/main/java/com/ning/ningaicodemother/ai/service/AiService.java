@@ -4,7 +4,6 @@ package com.ning.ningaicodemother.ai.service;
 import com.ning.ningaicodemother.ai.model.HtmlResult;
 import com.ning.ningaicodemother.ai.model.MultiResult;
 import dev.langchain4j.service.SystemMessage;
-import org.w3c.dom.html.HTMLAreaElement;
 import reactor.core.publisher.Flux;
 
 public interface AiService {

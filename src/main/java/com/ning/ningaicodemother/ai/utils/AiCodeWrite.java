@@ -11,6 +11,7 @@ import com.ning.ningaicodemother.ai.model.MultiResult;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
+@Deprecated
 public class AiCodeWrite {
     //指定根目录
     private static final String ROOT_PATH = System.getProperty("user.dir")+ File.separator+"tmp/out_code";
