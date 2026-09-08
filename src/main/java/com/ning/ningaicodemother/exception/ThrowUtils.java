@@ -1,5 +1,7 @@
 package com.ning.ningaicodemother.exception;
 
+import com.ning.ningaicodemother.enums.ErrorCode;
+
 // 异常抛出工具类
 public class ThrowUtils {
 

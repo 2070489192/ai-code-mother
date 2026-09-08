@@ -1,4 +1,4 @@
-package com.ning.ningaicodemother.pojo;
+package com.ning.ningaicodemother.enums;
 
 import cn.hutool.core.util.ObjUtil;
 import lombok.Getter;

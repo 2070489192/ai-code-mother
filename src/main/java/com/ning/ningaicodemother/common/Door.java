@@ -8,7 +8,7 @@ import com.ning.ningaicodemother.ai.model.HtmlResult;
 import com.ning.ningaicodemother.ai.model.MultiResult;
 import com.ning.ningaicodemother.ai.service.AiService;
 import com.ning.ningaicodemother.exception.BusinessException;
-import com.ning.ningaicodemother.exception.ErrorCode;
+import com.ning.ningaicodemother.enums.ErrorCode;
 import com.ning.ningaicodemother.exception.ThrowUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,11 +3,14 @@ package com.ning.ningaicodemother.controller;
 import com.mybatisflex.core.paginate.Page;
 import com.ning.ningaicodemother.aop.AuthCheck;
 import com.ning.ningaicodemother.common.BaseResponse;
-import com.ning.ningaicodemother.common.PageRequest;
+import com.ning.ningaicodemother.request.common.PageRequest;
 import com.ning.ningaicodemother.common.ResultUtil;
-import com.ning.ningaicodemother.exception.ErrorCode;
+import com.ning.ningaicodemother.enums.ErrorCode;
 import com.ning.ningaicodemother.exception.ThrowUtils;
 import com.ning.ningaicodemother.pojo.*;
+import com.ning.ningaicodemother.request.userrequest.LoginUserRequest;
+import com.ning.ningaicodemother.request.userrequest.UserRequest;
+import com.ning.ningaicodemother.request.userrequest.UserUpdate;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +63,7 @@ public class UserController {
      * @return 脱敏后的用户信息
      */
     @GetMapping("getInfo/{userAccount}")
-    @AuthCheck(mustRole = "user")
+    @AuthCheck
     public BaseResponse<UserVo> getUserInfo(@PathVariable String userAccount) {
         UserVo userVo = userService.getUserInfo(userAccount);
         return ResultUtil.success(userVo);
@@ -96,7 +99,7 @@ public class UserController {
      * @return 更新后的用户信息
      */
     @PutMapping("update")
-    @AuthCheck(mustRole = "user")
+    @AuthCheck
     public BaseResponse<UserVo> userUpdate(@RequestBody UserUpdate userUpdate, HttpServletRequest request) {
         UserVo userVo = userService.userUpdate(userUpdate,request);
         return ResultUtil.success(userVo);
@@ -110,7 +113,7 @@ public class UserController {
      * @return 用户详情
      */
     @GetMapping("getInfo/ById/{id}")
-    @AuthCheck(mustRole = "user")
+    @AuthCheck
     public UserVo getInfo(@PathVariable Long id) {
         return userService.getUserInfoById(id);
     }
@@ -135,7 +138,7 @@ public class UserController {
      * @return 是否退出登录成功
      */
     @PostMapping("logout")
-    @AuthCheck(mustRole = "user")
+    @AuthCheck
     public BaseResponse<Boolean> logout(HttpServletRequest request) {
         ThrowUtils.throwIf(request==null
                 , ErrorCode.PARAMS_ERROR
@@ -150,7 +153,7 @@ public class UserController {
      * @return 当前登录用户信息
      */
     @GetMapping("getCurrentLoginUser")
-    @AuthCheck(mustRole = "user")
+    @AuthCheck
     public BaseResponse<User> getCurrentLoginUser(HttpServletRequest request) {
         return ResultUtil.success(userService.getCurrentLoginUser(request));
     }

@@ -2,7 +2,7 @@ package com.ning.ningaicodemother.ai.core.parse;
 
 import com.ning.ningaicodemother.ai.model.HtmlResult;
 import com.ning.ningaicodemother.exception.BusinessException;
-import com.ning.ningaicodemother.exception.ErrorCode;
+import com.ning.ningaicodemother.enums.ErrorCode;
 
 
 public class HtmlCodeParser implements CodeParser<HtmlResult> {

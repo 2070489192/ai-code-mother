@@ -9,11 +9,11 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.util.Map;
 
 public class Codegen {
-private static final String[] generateTables = {"user"};
+private static final String[] generateTables = {"app"};
     public static void main(String[] args) {
 
 
-       Dict dict = YamlUtil.loadByPath("application.yml");
+       Dict dict = YamlUtil.loadByPath("application-local.yml");
        Map<String,Object> datasource = dict.getByPath("spring.datasource");
        String url = String.valueOf(datasource.get("url"));
        String username = String.valueOf(datasource.get("username"));

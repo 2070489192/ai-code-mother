@@ -1,6 +1,6 @@
 package com.ning.ningaicodemother.common;
 
-import com.ning.ningaicodemother.exception.ErrorCode;
+import com.ning.ningaicodemother.enums.ErrorCode;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package com.ning.ningaicodemother.exception;
+package com.ning.ningaicodemother.enums;
 
 import lombok.Getter;
 

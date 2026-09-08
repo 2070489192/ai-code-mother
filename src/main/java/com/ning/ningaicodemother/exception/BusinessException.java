@@ -1,5 +1,6 @@
 package com.ning.ningaicodemother.exception;
 
+import com.ning.ningaicodemother.enums.ErrorCode;
 import lombok.Getter;
 //自定义业务异常类
 @Getter

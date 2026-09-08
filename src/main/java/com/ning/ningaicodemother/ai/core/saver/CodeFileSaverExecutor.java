@@ -1,10 +1,8 @@
 package com.ning.ningaicodemother.ai.core.saver;
 
 import com.ning.ningaicodemother.ai.enums.CodeTypeEnum;
-import com.ning.ningaicodemother.ai.model.HtmlResult;
-import com.ning.ningaicodemother.ai.model.MultiResult;
 import com.ning.ningaicodemother.exception.BusinessException;
-import com.ning.ningaicodemother.exception.ErrorCode;
+import com.ning.ningaicodemother.enums.ErrorCode;
 
 import java.io.File;
 

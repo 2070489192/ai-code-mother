@@ -1,6 +1,6 @@
 package com.ning.ningaicodemother.common;
 
-import com.ning.ningaicodemother.exception.ErrorCode;
+import com.ning.ningaicodemother.enums.ErrorCode;
 
 // 响应工具类
 public class ResultUtil {

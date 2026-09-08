@@ -1,4 +1,4 @@
-package com.ning.ningaicodemother.pojo;
+package com.ning.ningaicodemother.request.userrequest;
 
 import lombok.Data;
 

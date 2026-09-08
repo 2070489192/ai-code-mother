@@ -4,7 +4,7 @@ package com.ning.ningaicodemother.aop;
 import com.ning.ningaicodemother.common.BaseResponse;
 import com.ning.ningaicodemother.common.ResultUtil;
 import com.ning.ningaicodemother.exception.BusinessException;
-import com.ning.ningaicodemother.exception.ErrorCode;
+import com.ning.ningaicodemother.enums.ErrorCode;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -4,6 +4,7 @@ package com.ning.ningaicodemother.ai.service;
 import com.ning.ningaicodemother.ai.model.HtmlResult;
 import com.ning.ningaicodemother.ai.model.MultiResult;
 import dev.langchain4j.service.SystemMessage;
+
 import reactor.core.publisher.Flux;
 
 public interface AiService {
@@ -36,6 +37,7 @@ public interface AiService {
      * @param userPrompt
      * @return
      */
+
     @SystemMessage(fromResource = "prompt/codegen-multi-file-system-prompt.txt")
-    Flux<String > generateMultiHtmlCodeStreaming(String userPrompt);
+    Flux<String> generateMultiHtmlCodeStreaming(String userPrompt);
 }

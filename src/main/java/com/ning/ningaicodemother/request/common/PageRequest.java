@@ -1,6 +1,7 @@
-package com.ning.ningaicodemother.common;
+package com.ning.ningaicodemother.request.common;
 
 import lombok.Data;
+import lombok.Getter;
 
 
 import java.io.Serial;
@@ -8,6 +9,7 @@ import java.io.Serializable;
 
 // 分页请求参数
 @Data
+@Getter
 public class PageRequest implements Serializable {
 
     @Serial

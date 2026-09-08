@@ -3,8 +3,11 @@ package com.ning.ningaicodemother.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
-import com.ning.ningaicodemother.common.PageRequest;
+import com.ning.ningaicodemother.request.common.PageRequest;
 import com.ning.ningaicodemother.pojo.*;
+import com.ning.ningaicodemother.request.userrequest.LoginUserRequest;
+import com.ning.ningaicodemother.request.userrequest.UserRequest;
+import com.ning.ningaicodemother.request.userrequest.UserUpdate;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**

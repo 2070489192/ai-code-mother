@@ -1,9 +1,9 @@
 package com.ning.ningaicodemother.aop;
 
-import com.ning.ningaicodemother.exception.ErrorCode;
+import com.ning.ningaicodemother.enums.ErrorCode;
 import com.ning.ningaicodemother.exception.ThrowUtils;
 import com.ning.ningaicodemother.pojo.User;
-import com.ning.ningaicodemother.pojo.UserCode;
+import com.ning.ningaicodemother.enums.UserCode;
 import com.ning.ningaicodemother.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,7 +36,7 @@ public class AuthInter {
     //获取当前用户权限
     UserCode userCode=UserCode.getCodeByValue(user.getUserRole());
     //必须要有管理员权限
-    ThrowUtils.throwIf(UserCode.ADMIN.equals(mustCode)&&UserCode.ADMIN.equals(userCode)
+    ThrowUtils.throwIf(UserCode.ADMIN.equals(mustCode) && !UserCode.ADMIN.equals(userCode)
             , ErrorCode.NOT_FOUND_ERROR
             ,"用户角色错误");
     //放行

@@ -1,8 +1,7 @@
 package com.ning.ningaicodemother.ai.enums;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.ning.ningaicodemother.exception.BusinessException;
-import com.ning.ningaicodemother.exception.ErrorCode;
+import com.ning.ningaicodemother.enums.ErrorCode;
 import com.ning.ningaicodemother.exception.ThrowUtils;
 import lombok.Getter;
 
