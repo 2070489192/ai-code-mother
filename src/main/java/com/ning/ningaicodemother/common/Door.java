@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import org.springframework.util.StreamUtils;
 
 @Slf4j
 @Component
@@ -33,16 +36,16 @@ public class Door {
      * @param codeTypeEnum   枚举类,通过传递的枚举,决定要生成什么类型的文件.
      * @return 文件
      */
-    public File generateCode(String userPrompt, CodeTypeEnum codeTypeEnum){
+    public File generateCode(String userPrompt, CodeTypeEnum codeTypeEnum,Long appid){
         ThrowUtils.throwIf(codeTypeEnum==null, ErrorCode.PARAMS_ERROR);
       return  switch (codeTypeEnum) {
             case HTML->{
                 HtmlResult htmlResult=aiService.generateHtmlCode(userPrompt);
-                yield CodeFileSaverExecutor.executeSaver(htmlResult,codeTypeEnum);
+                yield CodeFileSaverExecutor.executeSaver(htmlResult,codeTypeEnum,appid);
             }
             case MULTI_FILE->{
                  MultiResult multiResult = aiService.generateMultiHtmlCode(userPrompt);
-                 yield CodeFileSaverExecutor.executeSaver(multiResult,codeTypeEnum);
+                 yield CodeFileSaverExecutor.executeSaver(multiResult,codeTypeEnum,appid);
             }
             default->throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"没有对应的生成类");
         };
@@ -54,19 +57,40 @@ public class Door {
      * @param codeTypeEnum
      * @return 流式对象返回给前端,实现打字机效果.
      */
-    public Flux<String> generateCodeStreaming(String userPrompt, CodeTypeEnum codeTypeEnum) {
+    public Flux<String> generateCodeStreaming(String userPrompt, CodeTypeEnum codeTypeEnum,Long appid) {
         ThrowUtils.throwIf(codeTypeEnum==null, ErrorCode.PARAMS_ERROR);
+        String systemPrompt = readSystemPrompt(codeTypeEnum);
+        String combinedPrompt = systemPrompt + "\n\n---\n\n用户需求:\n" + userPrompt;
+        log.info("===== 本次流式生成拼接后的完整 Prompt =====\n{}", combinedPrompt);
         return switch (codeTypeEnum) {
             case HTML->{
-                Flux<String> stringFlux = aiService.generateHtmlCodeStreaming(userPrompt);
-                yield generateCodeStreaming(stringFlux,codeTypeEnum);
+                Flux<String> stringFlux = aiService.generateHtmlCodeStreaming(combinedPrompt);
+                yield generateCodeStreaming(stringFlux,codeTypeEnum,appid);
             }
             case MULTI_FILE->{
-                Flux<String> stringFlux = aiService.generateMultiHtmlCodeStreaming(userPrompt);
-                yield generateCodeStreaming(stringFlux,codeTypeEnum);
+                Flux<String> stringFlux = aiService.generateMultiHtmlCodeStreaming(combinedPrompt);
+                yield generateCodeStreaming(stringFlux,codeTypeEnum,appid);
             }
             default->throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"没有对应的生成类");
         };
+    }
+
+    private String readSystemPrompt(CodeTypeEnum codeTypeEnum) {
+        String resourcePath = switch (codeTypeEnum) {
+            case HTML -> "prompt/codegen-file-system-prompt.txt";
+            case MULTI_FILE -> "prompt/codegen-multi-file-system-prompt.txt";
+        };
+        try {
+            String content = StreamUtils.copyToString(
+                    getClass().getClassLoader().getResourceAsStream(resourcePath),
+                    StandardCharsets.UTF_8
+            );
+            log.info("===== 读取到 System Prompt ({}):=====\n{}", resourcePath, content);
+            return content;
+        } catch (IOException | NullPointerException e) {
+            log.error("读取 System Prompt 文件失败: {}", resourcePath, e);
+            return "";
+        }
     }
 
 
@@ -78,15 +102,16 @@ public class Door {
      * @param codeTypeEnum
      * @return
      */
-    private Flux<String> generateCodeStreaming(Flux<String> stringFlux, CodeTypeEnum codeTypeEnum) {
+    private Flux<String> generateCodeStreaming(Flux<String> stringFlux, CodeTypeEnum codeTypeEnum,Long appid) {
         StringBuilder codeBuilder = new StringBuilder();
         return stringFlux
                 .doOnNext(codeBuilder::append)
                 .doOnComplete(()->{
                     try{
                         String string = codeBuilder.toString();
+                        log.info("AI 流式完整输出:\n{}", string);
                         Object executor = CodeParserExecutor.executor(string, codeTypeEnum);
-                        File file = CodeFileSaverExecutor.executeSaver(executor, codeTypeEnum);
+                        File file = CodeFileSaverExecutor.executeSaver(executor, codeTypeEnum,appid);
                         log.info("流式生成成功: {}",file.getAbsoluteFile());
                     }catch (Exception e){
                         log.error("流式生成失败: {}", e.getMessage(), e);

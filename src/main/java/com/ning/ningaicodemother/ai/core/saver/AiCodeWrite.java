@@ -1,8 +1,8 @@
 package com.ning.ningaicodemother.ai.core.saver;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.ning.ningaicodemother.common.Priority;
 
 
 import java.io.File;
@@ -10,11 +10,11 @@ import java.nio.charset.StandardCharsets;
 
 public abstract class AiCodeWrite {
     //指定根目录
-    private static final String ROOT_PATH = System.getProperty("user.dir")+ File.separator+"tmp/out_code";
+    private static final String ROOT_PATH = Priority.TEP_OUT_CODE;
 
     //指定文件夹路径
-   protected static String  createDirPath(String bizType){
-        String unique= StrUtil.format("{}_{}",bizType, IdUtil.getSnowflakeNextIdStr());
+   protected static String  createDirPath(String bizType,Long appid){
+        String unique= StrUtil.format("{}_{}",bizType, appid);
         String dirPath= ROOT_PATH+File.separator+unique;
         FileUtil.mkdir(dirPath);
         return dirPath;
@@ -26,6 +26,6 @@ public abstract class AiCodeWrite {
         FileUtil.writeString(content == null ? "" : content, filePath, StandardCharsets.UTF_8);
     }
     //保存代码
-    public abstract File saveFile(Object result);
+    public abstract File saveFile(Object result,Long appid);
 
 }

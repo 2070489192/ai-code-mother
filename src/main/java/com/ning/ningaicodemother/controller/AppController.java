@@ -1,6 +1,7 @@
 package com.ning.ningaicodemother.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.ning.ningaicodemother.ai.enums.CodeTypeEnum;
@@ -17,13 +18,19 @@ import com.ning.ningaicodemother.pojo.User;
 import com.ning.ningaicodemother.request.apprequest.AppSaveRequest;
 import com.ning.ningaicodemother.request.apprequest.AppUpdateRequest;
 import com.ning.ningaicodemother.service.UserService;
+import org.springframework.http.codec.ServerSentEvent;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ning.ningaicodemother.pojo.App;
 import com.ning.ningaicodemother.service.AppService;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 应用 控制层。
@@ -31,6 +38,7 @@ import java.util.List;
  * @author 柠檬可晗
  * @since 2026-09-01
  */
+@Slf4j
 @RestController
 @RequestMapping("/app")
 public class AppController {
@@ -60,6 +68,7 @@ public class AppController {
         app.setAppName(appSaveRequest.getInitPrompt().substring(0,Math.min(appSaveRequest.getInitPrompt().length(),12)));
         app.setCodeGenType(CodeTypeEnum.MULTI_FILE.getValue());
         appService.save(app);
+        log.info("保存应用成功,应用id:{}",app.getId());
         return ResultUtil.success(app.getId());
     }
 
@@ -83,7 +92,7 @@ public class AppController {
      * @param appUpdate 应用更新请求参数
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
-    @PutMapping("update")
+    @PutMapping("updateByUser")
     @AuthCheck
     public BaseResponse<Boolean> update(@RequestBody AppUpdateRequest appUpdate, HttpServletRequest request) {
         ThrowUtils.throwIf(appUpdate==null, ErrorCode.PARAMS_ERROR,"没有接收到要改的参数");
@@ -191,7 +200,7 @@ public class AppController {
      * @param appUpdateRequest 应用更新请求参数
      * @return 更新结果
      */
-    @PutMapping("update")
+    @PutMapping("updateByAdmin")
     @AuthCheck(mustRole = "admin")
     public BaseResponse<Boolean> updateByAdmin(@RequestBody AppUpdateRequest appUpdateRequest) {
         ThrowUtils.throwIf(appUpdateRequest==null, ErrorCode.PARAMS_ERROR,"没有接收到要改的参数");
@@ -199,5 +208,38 @@ public class AppController {
         return ResultUtil.success(appService.updateByAdmin(appUpdateRequest));
     }
 
+    /**
+     * 聊天生成代码
+     * @param appid 应用id
+     * @param codeGenType 代码生成类型（枚举）
+     * @return 流式对象返回给前端,实现打字机效果
+     */
+    @GetMapping("chatToGenCode")
+    @AuthCheck
+    public Flux<ServerSentEvent<String>> chatToGenCode(Long appid,CodeTypeEnum codeGenType,HttpServletRequest httpServletRequest) {
+        ThrowUtils.throwIf(appid==null, ErrorCode.PARAMS_ERROR,"应用id不能为空");
+        ThrowUtils.throwIf(codeGenType==null, ErrorCode.PARAMS_ERROR,"代码生成类型不能为空");
+        //获取当前登录用户
+        User user = userService.getCurrentLoginUser(httpServletRequest);
+
+       Flux<String> flux =  appService.chatToGenCode(appid,codeGenType,user);
+       return flux.map(chunk->{
+           Map<String,String> wrapper=Map.of("d",chunk);
+           String json= JSONUtil.toJsonStr(wrapper);
+           return ServerSentEvent.<String>builder().data(json).build();
+       })
+               .concatWith(Mono.just(
+                        ServerSentEvent.<String>builder().event("done").data("").build()
+               ));
+    }
+    @GetMapping("/save/file")
+    @AuthCheck
+    public BaseResponse<String> saveFileDeploy(String  appid ,HttpServletRequest httpServletRequest){
+        ThrowUtils.throwIf(appid==null, ErrorCode.PARAMS_ERROR,"应用id不能为空");
+        //获取当前登录用户
+        User user = userService.getCurrentLoginUser(httpServletRequest);
+        String  s = appService.saveFileDeploy(appid, user);
+        return ResultUtil.success(s);
+    }
 
 }

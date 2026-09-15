@@ -7,9 +7,9 @@ import java.io.File;
 
 public class SaveHtml extends AiCodeWrite  {
     @Override
-    public File saveFile(Object result) {
+    public File saveFile(Object result,Long appid) {
         HtmlResult htmlResult= (HtmlResult)result;
-        String dirPath =createDirPath(CodeTypeEnum.HTML.getValue());
+        String dirPath =createDirPath(CodeTypeEnum.HTML.getValue(), appid);
         saveSingleFile("index.html",dirPath,htmlResult.getHtmlCode());
         return new File(dirPath);
     }

@@ -3,10 +3,17 @@ spring:
     name: ning-ai-code-mother-backend
   profiles:
     active: local
+  banner:
+    charset: UTF-8
 server:
   port: 8123
   servlet:
     context-path: /api
+
+logging:
+  charset:
+    console: UTF-8
+    file: UTF-8
 # springdoc-openapi项目配置
 springdoc:
   swagger-ui:

@@ -260,7 +260,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>  implements U
     @Override
     public User getCurrentLoginUser(HttpServletRequest request) {
         User user =  (User) request.getSession().getAttribute("USER_LOGIN_STATE");
-        ThrowUtils.throwIf(user==null, ErrorCode.NOT_FOUND_ERROR);
+        ThrowUtils.throwIf(user==null, ErrorCode.NOT_FOUND_ERROR,"当前用户未登录");
         return user;
     }
 

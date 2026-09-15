@@ -7,9 +7,9 @@ import java.io.File;
 
 public class SaveMulti extends AiCodeWrite {
     @Override
-    public  File saveFile(Object result) {
+    public  File saveFile(Object result,Long appid) {
         MultiResult multiResult= (MultiResult)result;
-        String dirPath =createDirPath(CodeTypeEnum.MULTI_FILE.getValue());
+        String dirPath =createDirPath(CodeTypeEnum.MULTI_FILE.getValue(), appid);
         saveSingleFile("index.html",dirPath,multiResult.getHtmlCode());
         saveSingleFile("style.css",dirPath,multiResult.getCssCode());
         saveSingleFile("script.js",dirPath,multiResult.getJavascriptCode());

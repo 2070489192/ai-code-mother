@@ -17,11 +17,12 @@ public interface AiService {
     HtmlResult generateHtmlCode(String userPrompt);
 
     /**
+     * 非流式(结构化输出)生成多文件代码,使用独立的系统提示词
      *
      * @param userPrompt 用户提示词
      * @return 多页面
      */
-    @SystemMessage(fromResource = "prompt/codegen-multi-file-system-prompt.txt")
+    @SystemMessage(fromResource = "prompt/codegen-multi-file-structured-system-prompt.txt")
     MultiResult generateMultiHtmlCode(String userPrompt);
 
     /**
