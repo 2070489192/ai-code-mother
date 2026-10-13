@@ -28,8 +28,12 @@ import com.ning.ningaicodemother.service.UserService;
 @RequestMapping("/user")
 public class UserController {
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
 
     /**
      * 保存用户。
@@ -80,6 +84,7 @@ public class UserController {
         userService.loginUser(loginUserRequest,request);
         return ResultUtil.success("登录成功");
     }
+
     /**
      * 根据主键删除用户(逻辑删除)。
      *

@@ -22,13 +22,13 @@ import org.springframework.http.codec.ServerSentEvent;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import com.ning.ningaicodemother.pojo.App;
 import com.ning.ningaicodemother.service.AppService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -43,13 +43,14 @@ import java.util.Map;
 @RequestMapping("/app")
 public class AppController {
 
-    @Autowired
-    private AppService appService;
+    private final AppService appService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-
+    public AppController(AppService appService, UserService userService) {
+        this.appService = appService;
+        this.userService = userService;
+    }
     /**
      * 保存应用。
      *
@@ -216,13 +217,13 @@ public class AppController {
      */
     @GetMapping("chatToGenCode")
     @AuthCheck
-    public Flux<ServerSentEvent<String>> chatToGenCode(Long appid,CodeTypeEnum codeGenType,HttpServletRequest httpServletRequest) {
+    public Flux<ServerSentEvent<String>> chatToGenCode(Long appid,String prompt,CodeTypeEnum codeGenType,HttpServletRequest httpServletRequest) {
         ThrowUtils.throwIf(appid==null, ErrorCode.PARAMS_ERROR,"应用id不能为空");
         ThrowUtils.throwIf(codeGenType==null, ErrorCode.PARAMS_ERROR,"代码生成类型不能为空");
         //获取当前登录用户
         User user = userService.getCurrentLoginUser(httpServletRequest);
 
-       Flux<String> flux =  appService.chatToGenCode(appid,codeGenType,user);
+       Flux<String> flux =  appService.chatToGenCode(appid,prompt,codeGenType,user);
        return flux.map(chunk->{
            Map<String,String> wrapper=Map.of("d",chunk);
            String json= JSONUtil.toJsonStr(wrapper);

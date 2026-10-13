@@ -38,13 +38,14 @@ public class Door {
      */
     public File generateCode(String userPrompt, CodeTypeEnum codeTypeEnum,Long appid){
         ThrowUtils.throwIf(codeTypeEnum==null, ErrorCode.PARAMS_ERROR);
+        String memoryId = appid.toString();
       return  switch (codeTypeEnum) {
             case HTML->{
-                HtmlResult htmlResult=aiService.generateHtmlCode(userPrompt);
+                HtmlResult htmlResult=aiService.generateHtmlCode(memoryId,userPrompt);
                 yield CodeFileSaverExecutor.executeSaver(htmlResult,codeTypeEnum,appid);
             }
             case MULTI_FILE->{
-                 MultiResult multiResult = aiService.generateMultiHtmlCode(userPrompt);
+                 MultiResult multiResult = aiService.generateMultiHtmlCode(memoryId,userPrompt);
                  yield CodeFileSaverExecutor.executeSaver(multiResult,codeTypeEnum,appid);
             }
             default->throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"没有对应的生成类");
@@ -60,15 +61,16 @@ public class Door {
     public Flux<String> generateCodeStreaming(String userPrompt, CodeTypeEnum codeTypeEnum,Long appid) {
         ThrowUtils.throwIf(codeTypeEnum==null, ErrorCode.PARAMS_ERROR);
         String systemPrompt = readSystemPrompt(codeTypeEnum);
+        String memoryId = appid.toString();
         String combinedPrompt = systemPrompt + "\n\n---\n\n用户需求:\n" + userPrompt;
         log.info("===== 本次流式生成拼接后的完整 Prompt =====\n{}", combinedPrompt);
         return switch (codeTypeEnum) {
             case HTML->{
-                Flux<String> stringFlux = aiService.generateHtmlCodeStreaming(combinedPrompt);
+                Flux<String> stringFlux = aiService.generateHtmlCodeStreaming(memoryId,combinedPrompt);
                 yield generateCodeStreaming(stringFlux,codeTypeEnum,appid);
             }
             case MULTI_FILE->{
-                Flux<String> stringFlux = aiService.generateMultiHtmlCodeStreaming(combinedPrompt);
+                Flux<String> stringFlux = aiService.generateMultiHtmlCodeStreaming(memoryId,combinedPrompt);
                 yield generateCodeStreaming(stringFlux,codeTypeEnum,appid);
             }
             default->throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"没有对应的生成类");

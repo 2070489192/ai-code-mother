@@ -9,9 +9,8 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.util.Map;
 
 public class Codegen {
-private static final String[] generateTables = {"app"};
+private static final String[] generateTables = {"chat_history"};
     public static void main(String[] args) {
-
 
        Dict dict = YamlUtil.loadByPath("application-local.yml");
        Map<String,Object> datasource = dict.getByPath("spring.datasource");

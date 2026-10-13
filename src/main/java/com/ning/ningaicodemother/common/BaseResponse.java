@@ -3,12 +3,14 @@ package com.ning.ningaicodemother.common;
 import com.ning.ningaicodemother.enums.ErrorCode;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 // 基础响应类
 @Data
 public class BaseResponse<T> implements Serializable {
-    private static final long serializableUID=1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private int code;
 

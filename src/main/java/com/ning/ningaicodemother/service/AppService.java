@@ -69,7 +69,7 @@ public interface AppService extends IService<App> {
      * @param codeGenType 代码生成类型（枚举）
      * @return 流式对象返回给前端,实现打字机效果
      */
-   Flux<String> chatToGenCode(Long appid, CodeTypeEnum codeGenType, User user);
+   Flux<String> chatToGenCode(Long appid,String prompt, CodeTypeEnum codeGenType, User user);
 
 
    String saveFileDeploy(String appid ,User user);

@@ -1,4 +1,7 @@
 spring:
+  session:
+    store-type: redis
+    timeout: 2592000
   application:
     name: ning-ai-code-mother-backend
   profiles:
@@ -9,7 +12,9 @@ server:
   port: 8123
   servlet:
     context-path: /api
-
+    session:
+      cookie:
+        max-age: 2592000
 logging:
   charset:
     console: UTF-8

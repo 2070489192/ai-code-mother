@@ -10,17 +10,16 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.ning.ningaicodemother.ai.enums.CodeTypeEnum;
 import com.ning.ningaicodemother.common.Door;
 import com.ning.ningaicodemother.common.Priority;
+import com.ning.ningaicodemother.enums.ChatHistoryMessageTypeEnum;
 import com.ning.ningaicodemother.enums.ErrorCode;
 import com.ning.ningaicodemother.exception.BusinessException;
 import com.ning.ningaicodemother.exception.ThrowUtils;
-import com.ning.ningaicodemother.pojo.App;
+import com.ning.ningaicodemother.pojo.*;
 import com.ning.ningaicodemother.mapper.AppMapper;
-import com.ning.ningaicodemother.pojo.AppVo;
-import com.ning.ningaicodemother.pojo.User;
-import com.ning.ningaicodemother.pojo.UserVo;
 import com.ning.ningaicodemother.request.apprequest.AppQueryRequest;
 import com.ning.ningaicodemother.request.apprequest.AppUpdateRequest;
 import com.ning.ningaicodemother.service.AppService;
+import com.ning.ningaicodemother.service.ChatHistoryService;
 import com.ning.ningaicodemother.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,12 +41,18 @@ import java.util.stream.Collectors;
 @Service
 public class AppServiceImpl extends ServiceImpl<AppMapper, App>  implements AppService{
 
-    @Autowired
-    private  UserService userService;
 
-    @Autowired
-    private Door door;
+    private final UserService userService;
 
+    private final Door door;
+
+    private final ChatHistoryService chatHistoryService;
+
+    public AppServiceImpl(ChatHistoryService chatHistoryService,Door door,UserService userService) {
+        this.chatHistoryService = chatHistoryService;
+        this.door = door;
+        this.userService = userService;
+    }
 
     @Override
     public boolean removeById(Long id, User user) {
@@ -55,13 +60,19 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App>  implements AppS
        QueryWrapper queryWrapper=QueryWrapper
                .create()
                .eq("id",id)
-               .eq("user_id",user.getId());
+               .eq("userId",user.getId());
         ThrowUtils.throwIf(!exists(queryWrapper), ErrorCode.NOT_FOUND_ERROR);
         App app = UpdateEntity.of(App.class,id);
         app.setIsDelete(1);
         app.setEditTime(LocalDateTime.now());
         int update = getMapper().update(app);
         ThrowUtils.throwIf(!(update>0), ErrorCode.OPERATION_ERROR);
+        // 删除应用下的所有聊天记录
+        try {
+            chatHistoryService.deleteByAppId(id);
+        } catch (Exception e) {
+           throw new BusinessException(ErrorCode.OPERATION_ERROR,"删除应用下的聊天记录失败"+e.getMessage());
+        }
         return true;
     }
 
@@ -70,7 +81,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App>  implements AppS
         QueryWrapper queryWrapper=QueryWrapper
                 .create()
                 .eq("id",appUpdate.getId())
-                .eq("user_id",user.getId());
+                .eq("userId",user.getId());
         ThrowUtils.throwIf(!exists(queryWrapper), ErrorCode.NOT_FOUND_ERROR);
         App app = UpdateEntity.of(App.class,appUpdate.getId());
         app.setAppName(appUpdate.getAppName());
@@ -126,17 +137,36 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App>  implements AppS
     }
 
     @Override
-    public Flux<String> chatToGenCode(Long appid,  CodeTypeEnum codeGenType,User user) {
+    public Flux<String> chatToGenCode(Long appid,String prompt,  CodeTypeEnum codeGenType,User user) {
         ThrowUtils.throwIf(appid==null, ErrorCode.PARAMS_ERROR,"应用id不能为空");
         ThrowUtils.throwIf(codeGenType==null, ErrorCode.PARAMS_ERROR,"代码生成类型不能为空");
         QueryWrapper queryWrapper=QueryWrapper
                 .create()
                 .eq("id",appid)
-                .eq("user_id",user.getId());
+                .eq("userId",user.getId());
         App app=getMapper().selectOneByQuery(queryWrapper);
         ThrowUtils.throwIf(app==null, ErrorCode.NOT_FOUND_ERROR,"应用id不存在或用户不是该应用的创建人");
-        String initPrompt = app.getInitPrompt();
-        return door.generateCodeStreaming(initPrompt,codeGenType,appid);
+        chatHistoryService.addChatMessage(appid,prompt, ChatHistoryMessageTypeEnum.USER.getValue(),user.getId());
+        Flux<String> stringFlux = door.generateCodeStreaming(prompt, codeGenType, appid);
+        StringBuilder sb=new StringBuilder();
+       return stringFlux.map(
+                chunk->{
+                    sb.append(chunk);
+                    return chunk;
+                })
+                        .doOnComplete(()->{
+                            String codeContent = sb.toString();
+                            if(!StrUtil.isBlank(codeContent)){
+                                //保存聊天记录
+                                chatHistoryService.addChatMessage(appid,codeContent, ChatHistoryMessageTypeEnum.AI.getValue(),user.getId());
+                            }
+                        })
+               .doOnError(e->{
+                    String errorMsg = "生成代码失败"+e.getMessage();
+                    //保存聊天记录
+                    chatHistoryService.addChatMessage(appid,errorMsg, ChatHistoryMessageTypeEnum.AI.getValue(),user.getId());
+               });
+
     }
 
     @Override
